@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head}"></head>
+
+<body>
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <div id="page-content-wrapper">
+
+        <!-- Navbar -->
+        <div th:replace="~{fragments/layout :: navbar}"></div>
+
+        <div class="container-fluid px-4 py-4">
+
+            <!-- Header -->
+            <div class="bg-primary text-white rounded-3 p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1">Students Enrolled</h2>
+                        <p class="mb-0 opacity-75">
+                            List of students enrolled in selected course
+                        </p>
+                    </div>
+
+                    <a th:href="@{/enrollments/showEnroll}"
+                       class="btn btn-light text-primary fw-semibold">
+                        <i class="bi bi-plus-lg me-1"></i> Enroll Student
+                    </a>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    <i class="bi bi-table me-1"></i>
+                    Enrolled Students List
+                </div>
+
+                <div class="card-body">
+
+                    <!-- If No Data -->
+                    <div th:if="${#lists.isEmpty(enrollments)}"
+                         class="alert alert-warning text-center">
+                        No students enrolled in this course.
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive"
+                         th:if="${!#lists.isEmpty(enrollments)}">
+
+                        <table class="table table-hover table-striped align-middle">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student ID</th>
+                                <th>Course ID</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="enroll, stat : ${enrollments}">
+                                <td th:text="${stat.count}"></td>
+                                <td th:text="${enroll.studentId}"></td>
+                                <td th:text="${enroll.courseIds[0]}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head}"></head>
+
+<body>
+
+<div class="d-flex" id="wrapper">
+
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <div id="page-content-wrapper">
+
+        <div th:replace="~{fragments/layout :: navbar}"></div>
+
+        <div class="container-fluid px-4 py-4">
+
+            <h2 class="mb-4">Dashboard</h2>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+
+                <!-- Total Students -->
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <h6>Total Students</h6>
+                            <h2 th:text="${totalStudents} ?: 0">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Courses -->
+                <div class="col-md-3">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <h6>Total Courses</h6>
+                            <h2 th:text="${totalCourses} ?: 0">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Course -->
+                <div class="col-md-3">
+                    <div class="card bg-info text-dark h-100">
+                        <div class="card-body">
+                            <h6>Top Performing Course</h6>
+                            <h5 th:text="${topCourse} ?: 'N/A'">N/A</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Enrollment -->
+                <div class="col-md-3">
+                    <div class="card bg-secondary text-white h-100">
+                        <div class="card-body">
+                            <h6>Enrollments This Month</h6>
+                            <!-- ✅ FIXED NAME -->
+                            <h2 th:text="${enrollThisMonth} ?: 0">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Recent Enrollment Table -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    Recent Enrollments
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Enroll Date</th>
+                            </tr>
+                            </thead>
+
+							<tbody>
+
+							    <!-- If empty -->
+							    <tr th:if="${enrollmentPage.totalElements == 0}">
+							        <td colspan="4" class="text-center text-muted">
+							            No enrollments found
+							        </td>
+							    </tr>
+
+							    <!-- If data present -->
+							    <tr th:each="enrollment : ${enrollmentPage.content}">
+							        <td th:text="${enrollment.id}"></td>
+							        <td th:text="${enrollment.student.firstName + ' ' + enrollment.student.lastName}"></td>
+							        <td th:text="${enrollment.course.courseName}"></td>
+							        <td th:text="${#temporals.format(enrollment.enrolledDate,'dd MMM yyyy')}"></td>
+							    </tr>
+
+							</tbody>
+
+                        </table>
+						
+						<div class="d-flex justify-content-between mt-3">
+
+						    <a th:if="${currentPage > 0}"
+						       th:href="@{/dashboard(page=${currentPage - 1})}"
+						       class="btn btn-outline-primary">
+						        ← Previous
+						    </a>
+
+						    <span class="align-self-center">
+						        Page [[${currentPage + 1}]] of [[${totalPages}]]
+						    </span>
+
+						    <a th:if="${currentPage < totalPages - 1}"
+						       th:href="@{/dashboard(page=${currentPage + 1})}"
+						       class="btn btn-outline-primary">
+						        Next →
+						    </a>
+
+						</div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-4 bg-light mt-auto border-top">
+            <div class="container-fluid px-4">
+                <div class="text-muted small">
+                    © Student Management System
+                </div>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+</body>
+</html>

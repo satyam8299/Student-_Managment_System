@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head}"></head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div th:replace="~{fragments/layout :: sidebar}"> </div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+			<div th:replace="~{fragments/layout :: navbar}"> </div>
+           
+
+            <div class="container-fluid px-4 py-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Courses</h2>
+                    <a th:href="@{/course/new}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add New
+                        Course</a>
+                </div>
+				<div th:if="${message}" class="alert alert-sucess text-center" role="alert" th:text="${message}"></div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <i class="bi bi-table me-1"></i> Course List
+                    </div>
+                    <div class="card-body">
+						<div class="text-muted" th:if="${courses.content.isEmpty()}"> No course found </div>
+                        <div class="table-responsive"  th:if="${!courses.content.isEmpty()}">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Course Name</th>
+										<th>Course Code</th>
+										<th>Couse Fees</th>
+                                        <th>Duration</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+								<tbody>
+								<tr th:each="course : ${courses.content}">
+								    <td th:text="${course.id}"></td>
+								    <td th:text="${course.courseName}"></td>
+								    <td th:text="${course.courseCode}"></td>
+								    <td th:text="${course.fee}"></td>
+								    <td th:text="${course.duration}"></td>
+
+								    <!-- ✅ ACTIONS COLUMN -->
+									<td>
+									    <!-- View Button -->
+									    <a th:href="@{/course/view/{id}(id=${course.id})}"
+									       class="btn btn-info btn-sm me-2">
+									        <i class="bi bi-eye"></i>
+									    </a>
+
+									    <!-- Edit Button -->
+									    <a th:href="@{/course/edit/{id}(id=${course.id})}"
+									       class="btn btn-warning btn-sm">
+									        <i class="bi bi-pencil"></i>
+									    </a>
+									</td>
+								</tr>
+								</tbody>
+                            </table>
+                        </div>
+						<nav aria-label="Course pagination">
+						    <ul class="pagination justify-content-end">
+
+						        <!-- Previous -->
+						        <li class="page-item"
+						            th:classappend="${courses.first} ? 'disabled'">
+						            <a class="page-link"
+						               th:href="@{/course/list(page=${courses.number - 1}, size=${courses.size})}">
+						                Previous
+						            </a>
+						        </li>
+
+						        <!-- Page Numbers -->
+						        <li class="page-item"
+						            th:each="i : ${#numbers.sequence(0, courses.totalPages - 1)}"
+						            th:classappend="${courses.number == i} ? 'active'">
+
+						            <a class="page-link"
+						               th:text="${i + 1}"
+						               th:href="@{/course/list(page=${i}, size=${courses.size})}">
+						            </a>
+						        </li>
+
+						        <!-- Next -->
+						        <li class="page-item"
+						            th:classappend="${courses.last} ? 'disabled'">
+						            <a class="page-link"
+						               th:href="@{/course/list(page=${courses.number + 1}, size=${courses.size})}">
+						                Next
+						            </a>
+						        </li>
+
+						    </ul>
+						</nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div th:replace="~{fragments/layout :: scripts}"> </div>
+</body>
+
+</html>

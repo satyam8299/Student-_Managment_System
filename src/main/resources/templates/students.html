@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head}"></head>
+
+<body>
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+        <div th:replace="~{fragments/layout :: navbar}"></div>
+
+        <div class="container-fluid px-4 py-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Students</h2>
+                <a th:href="@{/students/new}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Add New Student
+                </a>
+            </div>
+
+            <!-- Success Message -->
+            <div th:if="${param.message}" 
+                 class="alert alert-success alert-dismissible fade show">
+                <span th:text="${param.message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <i class="bi bi-table me-1"></i> Student List
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th width="150">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <!-- No Data Case -->
+                            <tr th:if="${studentPage.totalElements == 0}">
+                                <td colspan="5" class="text-center">
+                                    No Students Found
+                                </td>
+                            </tr>
+
+                            <!-- Dynamic Rows -->
+                            <tr th:each="student : ${studentPage.content}">
+                                <td th:text="'#STU' + ${student.id}"></td>
+
+                                <td th:text="${student.firstName + ' ' + student.lastName}"></td>
+
+                                <td th:text="${student.email}"></td>
+
+                                <td th:text="${student.phoneNumber}"></td>
+
+                                <td>
+                                    <a th:href="@{/students/view/{id}(id=${student.id})}"
+                                       class="btn btn-sm btn-info text-white me-1"
+                                       title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <a th:href="@{/students/edit/{id}(id=${student.id})}"
+                                       class="btn btn-sm btn-warning text-white me-1"
+                                       title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+									<form th:action="@{/students/delete/{id}(id=${student.id})}"
+									      method="post"
+									      style="display:inline">
+
+									    <button type="submit"
+									            class="btn btn-sm btn-danger"
+									            onclick="return confirm('Are you sure you want to delete this student?')">
+									        <i class="bi bi-trash"></i>
+									    </button>
+									</form>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+					<!-- Pagination -->
+					<nav th:if="${studentPage.totalPages > 1}">
+					    <ul class="pagination justify-content-end">
+
+					        <!-- Previous -->
+					        <li class="page-item"
+					            th:classappend="${studentPage.first} ? 'disabled'">
+					            <a class="page-link"
+					               th:if="!${studentPage.first}"
+					               th:href="@{/students/list(page=${currentPage - 1})}">
+					                Previous
+					            </a>
+					            <span class="page-link" th:if="${studentPage.first}">
+					                Previous
+					            </span>
+					        </li>
+
+					        <!-- Page Numbers -->
+					        <li class="page-item"
+					            th:each="i : ${#numbers.sequence(0, studentPage.totalPages - 1)}"
+					            th:classappend="${i == currentPage} ? 'active'">
+
+					            <a class="page-link"
+					               th:href="@{/students/list(page=${i})}"
+					               th:text="${i + 1}">
+					            </a>
+					        </li>
+
+					        <!-- Next -->
+					        <li class="page-item"
+					            th:classappend="${studentPage.last} ? 'disabled'">
+					            <a class="page-link"
+					               th:if="!${studentPage.last}"
+					               th:href="@{/students/list(page=${currentPage + 1})}">
+					                Next
+					            </a>
+					            <span class="page-link" th:if="${studentPage.last}">
+					                Next
+					            </span>
+					        </li>
+
+					    </ul>
+					</nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+</body>
+</html>
