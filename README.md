@@ -43,7 +43,7 @@ This project allows administrators to manage students, courses, and enrollments 
 ## ⚙️ Installation
 
 Clone the repository
-git clone https://github.com/satyam8299/Student_Managment_System.git
+git clone https://github.com/satyam8299/Student_Managment_Syst.git
 
 
 Run the project
@@ -57,3 +57,4 @@ http://localhost:8080/login
 ## 👨‍💻 Author
 
 **Satyam Singh**
+
