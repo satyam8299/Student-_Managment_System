@@ -42,6 +42,11 @@ This project allows administrators to manage students, courses, and enrollments 
 
 ## ⚙️ Installation
 
+Follow these steps to run the project locally.
+
+### 1️⃣ Clone the repository
+git clone https://github.com/satyam8299/Student-_Managment_System.git
+
 
 Run the project
 mvn spring-boot:run
@@ -54,5 +59,6 @@ http://localhost:8080/login
 ## 👨‍💻 Author
 
 **Satyam Singh**
+
 
 
