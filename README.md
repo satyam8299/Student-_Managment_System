@@ -55,10 +55,25 @@ mvn spring-boot:run
 Open browser
 http://localhost:8080/login
 
+## 📸 Screenshots
+
+### Login Page
+![Login](screenshots/login.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Students Page
+![Students](screenshots/students.png)
+
+### Courses Page
+![Courses](screenshots/courses.png)
+
 
 ## 👨‍💻 Author
 
 **Satyam Singh**
+
 
 
 
